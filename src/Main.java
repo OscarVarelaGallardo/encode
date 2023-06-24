@@ -52,7 +52,9 @@ public class Main {
                 System.out.println("Ingrese su clave");
                 empleado.setClave((sc.nextLine()));
                 System.out.println("¿Es activo?");
-                empleado.setActivo(Boolean.parseBoolean(sc.nextLine()));
+                //validar si la primera letra es si o no y convertirlo a booleano
+                empleado.setActivo(sc.nextLine().equals("si") ? true : false);
+
                 System.out.println(empleado);
 
                 //encriptar su clave
