@@ -1,11 +1,20 @@
 import model.Empleado;
 import model.Estudiante;
 import utilities.AES;
+import utilities.RSA;
 
-
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Scanner;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, InvalidKeySpecException, IOException, NoSuchProviderException {
         Scanner sc = new Scanner(System.in);
         int opcion;
         do {
@@ -28,10 +37,12 @@ public class Main {
                 estudiante.setMatricula(sc.nextLine());
                 System.out.println("Ingrese su carrera: ");
                 estudiante.setCarrera(sc.nextLine());
-                //encriptar su matricula
+
                 AES aes = new AES();
+
                 String matriculaEncriptada = aes.encriptar(estudiante.getMatricula());
                 estudiante.setMatricula(matriculaEncriptada);
+                System.out.println("Cifrado con AES");
                 System.out.println("Matricula encriptada: " + matriculaEncriptada);
                 System.out.println("Matricula desencriptada: " + aes.desencriptar(matriculaEncriptada));
                 System.out.println(estudiante);
@@ -39,8 +50,6 @@ public class Main {
             if (opcion == 2) {
 
                 Empleado empleado = new Empleado();
-
-
                 System.out.println("Ingrese su nombre: ");
                 empleado.setNombre(sc.nextLine());
                 System.out.println("Ingrese su apellido: ");
@@ -52,25 +61,49 @@ public class Main {
                 System.out.println("Ingrese su clave");
                 empleado.setClave((sc.nextLine()));
                 System.out.println("¿Es activo?");
-                //validar si la primera letra es si o no y convertirlo a booleano
+
                 empleado.setActivo(sc.nextLine().equals("si") ? true : false);
 
                 System.out.println(empleado);
 
-                //encriptar su clave
-                AES aes = new AES();
-                String claveEncriptada = aes.encriptar(String.valueOf(empleado.getClave()));
-                empleado.setClave((claveEncriptada));
-                System.out.println("Clave encriptada: " + claveEncriptada);
-                System.out.println("Clave desencriptada: " + aes.desencriptar(claveEncriptada));
-                System.out.println(empleado);
+                String str = empleado.getClave();
+                RSA rsa = new RSA();
+
+                rsa.genKeyPair(512);
+
+
+                String file_private = "/tmp/rsa.pri";
+                String file_public = "/tmp/rsa.pub";
+
+                rsa.saveToDiskPrivateKey("/tmp/rsa.pri");
+                rsa.saveToDiskPublicKey("/tmp/rsa.pub");
+
+                String secure = rsa.Encrypt(str);
+                System.out.println("Cifrado RSAE ");
+                System.out.println("\nCifrado:");
+                System.out.println(secure);
+
+
+                RSA rsa2 = new RSA();
+
+                rsa2.openFromDiskPrivateKey("/tmp/rsa.pri");
+                rsa2.openFromDiskPublicKey("/tmp/rsa.pub");
+
+                String unsecure = rsa2.Decrypt(secure);
+
+                System.out.println("\nDescifrado:");
+
+                System.out.println(unsecure);
+
+
+
 
 
             }
 
 
         }   while (opcion != 3) ;
-        System.out.println("Gracias por usar el programa de encriptacion AES");
+        System.out.println("Gracias por usar el programa de encriptacion AES y RSA");
 
     }
 
