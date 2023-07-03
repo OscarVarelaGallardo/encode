@@ -1,7 +1,6 @@
 package model;
 
 
-import utilities.AES;
 
 public class Estudiante extends Persona
 
@@ -11,11 +10,6 @@ public class Estudiante extends Persona
 
 
 
-    public Estudiante(final String nombre, final String apellido, final byte edad, final String password, final String matricula, final String carrera) {
-        super(nombre, apellido, edad ,password);
-        this.matricula = matricula;
-        this.carrera = carrera;
-    }
 
 
     public Estudiante() {
@@ -46,10 +40,9 @@ public class Estudiante extends Persona
 
         return
                 super.toString() +
-                "Estudiante{" +
-                "matricula='" + matricula + '\'' +
-                ", carrera='" + carrera + '\'' +
-                '}';
+                ", matricula='" + matricula + '\'' +
+                ", carrera='" + carrera + '\''
+                ;
     }
 
 

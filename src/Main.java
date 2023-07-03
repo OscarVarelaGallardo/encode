@@ -26,167 +26,256 @@ public class Main {
             System.out.println("3. Desencryptar contraseña AES/RSA ");
             System.out.println("4. Salir");
             opcion = sc.nextInt();
+
            switch (opcion) {
 
                case 1:
                    Estudiante estudiante = new Estudiante();
+                   do {
+                       System.out.println("Ingrese el nombre del estudiante");
+                       String nombre = sc.next();
+                       if (nombre.length() < 3) {
+                           System.out.println("El nombre debe tener al menos 3 caracteres");
 
-                   System.out.println("Ingrese el nombre del estudiante");
-                   String nombre = sc.next();
-                   estudiante.setNombre(nombre);
+                       }
+                       estudiante.setNombre(nombre);
 
-                   System.out.println("Ingrese el apellido del estudiante");
-                   String apellido = sc.next();
-                   estudiante.setApellido(apellido);
+                   } while (estudiante.getNombre().length() < 3);
+                   do {
+                       System.out.println("Ingrese el apellido del estudiante");
+                       String apellido = sc.next();
+                       if (apellido.length() < 3) {
+                           System.out.println("El apellido debe tener al menos 3 caracteres");
 
-                   System.out.println("Ingrese la edad del estudiante");
-                   byte edad = sc.nextByte();
-                   estudiante.setEdad(edad);
+                       }
+                       estudiante.setApellido(apellido);
 
-                   System.out.println("Ingrese la carrera del estudiante");
-                   String carrera = sc.next();
-                   estudiante.setCarrera(carrera);
+                   } while (estudiante.getApellido().length() < 3);
 
-                   System.out.println("Ingrese la matricula del estudiante");
-                   String matricula = sc.next();
-                   estudiante.setMatricula(matricula);
+                   do {
+                       System.out.println("Ingrese la edad del estudiante");
+                       int edad = sc.nextInt();
+                       if (edad < 18) {
+                           System.out.println("El estudiante debe ser mayor de edad");
+
+                       }
+                       estudiante.setEdad((byte) edad);
+                   } while (estudiante.getEdad() < 18);
+
+                   do {
+                       System.out.println("Ingrese la carrera del estudiante");
+                       String carrera = sc.next();
+                       if (carrera.length() < 3) {
+                           System.out.println("La carrera debe tener al menos 3 caracteres");
+
+                       }
+                       estudiante.setCarrera(carrera);
+                   } while (estudiante.getCarrera().length() < 3);
+
+                   do {
+                       System.out.println("Ingresa la matricula del estudiante");
+                       String matricula = sc.next();
+                       if (matricula.length() < 3) {
+                           System.out.println("La matricula debe tener al menos 3 caracteres");
+
+                       }
+                       estudiante.setMatricula(matricula);
+                   } while (estudiante.getMatricula().length() < 3);
+                   int tipo;
+                   do {
+                       System.out.println("¿Que tipo de contraseña requieres?");
+                       System.out.println("AES digite 1");
+                       System.out.println("RSA digite 2");
+                       tipo = sc.nextInt();
+                   } while (1 == tipo && tipo == 2);
+
+                   switch (tipo) {
+                       case 1:
+                           AES aes = new AES();
+                           System.out.println("Ingrese la contraseña  a encriptar AES");
+                           String password = sc.next();
+                           estudiante.setPassword(password);
+                           System.out.println("La contraseña del estudiante AES es: " + aes.encriptar(estudiante.getPassword()));
+                           System.out.println("Tus datos son: " + estudiante.toString());
+                           break;
+
+                       case 2:
+
+                           String password2 = "";
+                           do {
+                               System.out.println("Ingrese la contraseña a encriptar la contraseña debe tener al menos 8 caracteres");
+                               password2 = sc.next();
+
+                           } while (password2.length() < 8);
+                           estudiante.setPassword(password2);
+                           RSA rsa = new RSA();
+                           rsa.genKeyPair(512);
+                           String file_private = "/tmp/rsa.pri";
+                           String file_public = "/tmp/rsa.pub";
+
+                           rsa.saveToDiskPrivateKey("/tmp/rsa.pri");
+                           rsa.saveToDiskPublicKey("/tmp/rsa.pub");
+
+                           String secured = rsa.Encrypt(estudiante.getPassword());
+                           System.out.println("La contraseña del estudiante es: " + secured);
+                           System.out.println("Tus datos son: " + estudiante.toString());
+
+
+                           break;
+
+
+                       default:
+                           System.out.println("Opción no válida");
+                           break;
+                   }
+                   break;
+               case 2:
+                   Empleado empleado = new Empleado();
+                    do {
+
+                   System.out.println("Ingrese el nombre del empleado");
+                   String nombre2 = sc.next();
+                   if(nombre2 == null || nombre2.length() < 3){
+                       System.out.println("El nombre debe tener al menos 3 caracteres");
+                   }
+                     empleado.setNombre(nombre2);
+                     }while (empleado.getNombre().length() < 3);
+
+                    do {
+                        System.out.println("Ingrese el apellido del empleado");
+                        String apellido2 = sc.next();
+                        if (apellido2 == null || apellido2.length() < 3) {
+                            System.out.println("El apellido debe tener al menos 3 caracteres");
+                        }
+                        empleado.setApellido(apellido2);
+                    }while (empleado.getApellido().length() < 3);
+
+                    do {
+
+                        System.out.println("Ingrese la edad del empleado");
+                        byte edad2 = sc.nextByte();
+
+                        if (edad2 < 18) {
+                            System.out.println("El empleado debe ser mayor de edad");
+                        }
+
+                        empleado.setEdad(edad2);
+                    }while (empleado.getEdad() < 18);
+
+                    do{
+                   System.out.println("Ingrese el puesto del empleado");
+                   String puesto = sc.next();
+                     if(puesto == null || puesto.length() < 3){
+                          System.out.println("El puesto debe tener al menos 3 caracteres");
+                     }
+                   empleado.setPuesto(puesto);
+                    }while (empleado.getPuesto().length() < 3);
+
+                    do{
+                   System.out.println("Ingrese el salario del empleado");
+                   double salario = sc.nextDouble();
+                        if(salario < 0){
+                            System.out.println("El salario debe ser mayor a 0");
+                        }
+
+                   empleado.setSueldo(salario);
+                    }while (empleado.getSueldo() < 0);
+
+                    do{
+                   System.out.println("Ingrese la contraseña del empleado debe tener al menos 8 caracteres");
+                   String password3 = sc.next();
+                        if(password3 == null || password3.length() < 8){
+                            System.out.println("La contraseña debe tener al menos 8 caracteres");
+                        }
+                   empleado.setPassword(password3);
+                    }while (empleado.getPassword().length() < 8);
+
+                    do{
+                   System.out.println("¿Es activo el empleado?");
+                   System.out.println("Si digite 1");
+                   System.out.println("No digite 2");
+
+                   int activo = sc.nextInt();
+                        if (activo == 1) {
+                            empleado.setActivo(true);
+                        } else if (activo == 2){
+                            empleado.setActivo(false);
+                        } else {
+                            System.out.println("Opción no válida");
+                        }
+                    }while (empleado.isActivo() == false && empleado.isActivo() == true);
+
 
                    System.out.println("¿Que tipo de contraseña requieres?");
                    System.out.println("AES digite 1");
                    System.out.println("RSA digite 2");
-                   int tipo = sc.nextInt();  // 1 AES 2 RSA
+                   int tipo3 = sc.nextInt();  // 1 AES 2 RSA
 
-                     switch (tipo) {
-                            case 1:
-                                AES aes = new AES();
-                                System.out.println("Ingrese la contraseña  a encriptar");
-                                String password = sc.next();
-                                estudiante.setPassword(password);
-                                System.out.println("La contraseña del estudiante es: " + aes.encriptar(estudiante.getPassword()));
-                                System.out.println("Tus datos son: " + estudiante.toString());
-                                break;
+                   switch (tipo3) {
+                       case 1:
+                           AES aes = new AES();
+                           System.out.println("La contraseña del empleado es: " + aes.encriptar(empleado.getPassword()));
+                           System.out.println("Tus datos son: " + empleado.toString());
+                           break;
 
-                          case 2:
+                       case 2:
+                           RSA rsa = new RSA();
+                           rsa.genKeyPair(512);
+                           String file_private = "/tmp/rsa.pri";
+                           String file_public = "/tmp/rsa.pub";
 
-                                String password2 = "";
-                                do{
-                                    System.out.println("Ingrese la contraseña a encriptar la contraseña debe tener al menos 8 caracteres");
-                                    password2 = sc.next();
+                           rsa.saveToDiskPrivateKey("/tmp/rsa.pri");
+                           rsa.saveToDiskPublicKey("/tmp/rsa.pub");
 
-                                }while(password2.length() < 8);
-                                estudiante.setPassword(password2);
-                              RSA rsa = new RSA();
-                              rsa.genKeyPair(512);
-                              String file_private = "/tmp/rsa.pri";
-                              String file_public = "/tmp/rsa.pub";
+                           String secured = rsa.Encrypt(empleado.getPassword());
+                           System.out.println("La contraseña del estudiante es: " + secured);
+                           System.out.println("Tus datos son: " + empleado.toString());
+                   }
 
-                              rsa.saveToDiskPrivateKey("/tmp/rsa.pri");
-                              rsa.saveToDiskPublicKey("/tmp/rsa.pub");
-
-                              String secured = rsa.Encrypt(estudiante.getPassword());
-                              System.out.println("La contraseña del estudiante es: " + secured);
-                              System.out.println("Tus datos son: " + estudiante.toString());
-
-
-                                break;
-
-
-                          default:
-                            System.out.println("Opción no válida");
-                            break;
-                        }
                    break;
-                case 2:
-                    Empleado empleado = new Empleado();
+               case 3:
+                   String password = "";
 
-                    System.out.println("Ingrese el nombre del empleado");
-                    String nombre2 = sc.next();
-                    empleado.setNombre(nombre2);
+                   System.out.println("Ingrese la contraseña a desencriptar");
+                   password = sc.next();
 
-                    System.out.println("Ingrese el apellido del empleado");
-                    String apellido2 = sc.next();
-                    empleado.setApellido(apellido2);
 
-                    System.out.println("Ingrese la edad del empleado");
-                    byte edad2 = sc.nextByte();
-                    empleado.setEdad(edad2);
-
-                    System.out.println("Ingrese el puesto del empleado");
-                    String puesto = sc.next();
-                    empleado.setPuesto(puesto);
-
-                    System.out.println("Ingrese el salario del empleado");
-                    double salario = sc.nextDouble();
-                    empleado.setSueldo(salario);
-
-                    System.out.println("Ingrese la contraseña del empleado");
-                    String password3 = sc.next();
-                    empleado.setPassword(password3);
-
-                    System.out.println("¿Es activo el empleado?");
-                    System.out.println("Si digite 1");
-                    System.out.println("No digite 2");
-                    int activo = sc.nextInt();
-
-                    if (activo == 1) {
-                        empleado.setActivo(true);
-                    } else {
-                        empleado.setActivo(false);
+                   int tipo2 = 0;
+                   do{
+                   System.out.println("¿Que tipo de contraseña requieres?");
+                   System.out.println("AES digite 1");
+                   System.out.println("RSA digite 2");
+                    tipo2 = sc.nextInt();
+                    if (tipo2 != 1 && tipo2 != 2){
+                        System.out.println("Opción no válida");
                     }
+                        }while (tipo2 != 1 && tipo2 != 2);
 
-                    System.out.println("¿Que tipo de contraseña requieres?");
-                    System.out.println("AES digite 1");
-                    System.out.println("RSA digite 2");
-                    int tipo3 = sc.nextInt();  // 1 AES 2 RSA
 
-                    switch (tipo3) {
-                        case 1:
-                            AES aes = new AES();
-                            System.out.println("La contraseña del empleado es: " + aes.encriptar(empleado.getPassword()));
-                            System.out.println("Tus datos son: " + empleado.toString());
-                            break;
+                   switch (tipo2) {
+                       case 1:
+                           AES aes = new AES();
+                           System.out.println("La contraseña desencriptada AES es: " + aes.desencriptar(password));
+                           break;
 
-                        case 2:
-                            RSA rsa = new RSA();
-                            System.out.println("La contraseña del empleado es: " + rsa.encrypt(empleado.getPassword()));
-                            System.out.println("Tus datos son: " + empleado.toString());
-                            break;
-                    }
+                       case 2:
+                           RSA rsa = new RSA();
+                           rsa.openFromDiskPrivateKey("/tmp/rsa.pri");
+                           rsa.openFromDiskPublicKey("/tmp/rsa.pub");
+                           String unsecure = rsa.Decrypt(password);
+                           System.out.println("La contraseña desencriptada RSA  es: " + unsecure);
 
-                    break;
-                case 3:
-                    System.out.println("Ingrese la contraseña a desencriptar");
-                    String password = sc.next();
-                    System.out.println("¿Que tipo de contraseña requieres?");
-                    System.out.println("AES digite 1");
-                    System.out.println("RSA digite 2");
-                    int tipo2 = sc.nextInt();  // 1 AES 2 RSA
+                           break;
+                   }
+               case 4:
+                   System.out.println("Gracias por usar el sistema de encriptación");
+                   System.out.println("Mantenga su contraseña segura");
+                   System.exit(0);
+                   break;
 
-                    switch (tipo2) {
-                        case 1:
-                            AES aes = new AES();
-                            System.out.println("La contraseña desencriptada es: " + aes.desencriptar(password));
-                            break;
-
-                        case 2:
-                            RSA rsa = new RSA();
-
-                            rsa.openFromDiskPrivateKey("/tmp/rsa.pri");
-                            rsa.openFromDiskPublicKey("/tmp/rsa.pub");
-                            String unsecure = rsa.Decrypt(password);
-
-                            System.out.println("La contraseña desencriptada es: " + unsecure);
-
-                            break;
-                    }
-                case 4:
-                    System.out.println("Gracias por usar el sistema");
-                    System.exit(0);
-                    break;
-
-                default:
-                    System.out.println("Opción no válida");
-                    break;
+               default:
+                   System.out.println("Opción no válida");
+                   break;
            }
 
 
