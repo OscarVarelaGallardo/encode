@@ -11,8 +11,8 @@ public class Estudiante extends Persona
 
 
 
-    public Estudiante(final String nombre, final String apellido, final byte edad, final String matricula, final String carrera) {
-        super(nombre, apellido, edad);
+    public Estudiante(final String nombre, final String apellido, final byte edad, final String password, final String matricula, final String carrera) {
+        super(nombre, apellido, edad ,password);
         this.matricula = matricula;
         this.carrera = carrera;
     }

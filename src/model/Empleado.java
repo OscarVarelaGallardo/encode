@@ -2,27 +2,23 @@ package model;
 
 public class Empleado extends Persona {
 
-    private String clave;
+
     private double sueldo;
 
-    public Empleado(final String nombre, final String apellido, final byte edad, final String clave, final double sueldo, final boolean activo) {
-        super(nombre, apellido, edad);
-        this.clave = clave;
+    private String puesto;
+
+    public Empleado(final String nombre, final String apellido,final String puesto,  final byte edad, final String password,  final double sueldo, final boolean activo) {
+        super(nombre, apellido, edad, password);
+
         this.sueldo = sueldo;
         this.activo = activo;
+
     }
 
     public Empleado() {
 
     }
 
-    public String getClave() {
-        return clave;
-    }
-
-    public void setClave(final String clave) {
-        this.clave = clave;
-    }
 
 
     public double getSueldo() {
@@ -41,16 +37,23 @@ public class Empleado extends Persona {
         this.activo = activo;
     }
 
+    public String getPuesto() {
+        return puesto;
+    }
+    public void setPuesto(final String puesto) {
+        this.puesto = puesto;
+    }
+
     private boolean activo;
 
     @Override
     public String toString() {
         return
                 super.toString() +
-                "Empleado{" +
-                "clave='" + clave + '\'' +
+                "Empleado{"  +
                 ", sueldo=" + sueldo +
                 ", activo=" + activo +
+                        ", puesto='" + puesto + '\'' +
                 '}';
     }
 }
